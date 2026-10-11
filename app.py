@@ -84,6 +84,8 @@ def parse_form(table):
             raise ValueError(
                 f"{col.name.replace('_', ' ').title()} is required."
             )
+        if col.name == "phone" and (len(raw) != 10 or not raw.isascii() or not raw.isdigit()):
+            raise ValueError("Phone number must contain exactly 10 digits.")
 
         if "int" in typ:
             data[col.name] = int(raw)
