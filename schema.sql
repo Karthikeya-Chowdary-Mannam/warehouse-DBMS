@@ -421,3 +421,19 @@ BEGIN
             ADD CONSTRAINT uq_customer_name UNIQUE (name);
     END IF;
 END $$;
+
+ALTER TABLE manager
+ADD CONSTRAINT manager_phone_10_digits
+CHECK (phone ~ '^[0-9]{10}$');
+
+ALTER TABLE employee
+ADD CONSTRAINT employee_phone_10_digits
+CHECK (phone ~ '^[0-9]{10}$');
+
+ALTER TABLE supplier
+ADD CONSTRAINT supplier_phone_10_digits
+CHECK (phone ~ '^[0-9]{10}$');
+
+ALTER TABLE customer
+ADD CONSTRAINT customer_phone_10_digits
+CHECK (phone ~ '^[0-9]{10}$');
