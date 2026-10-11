@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Warehouse Desk{% endblock %} · Warehouse Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">W</span><span>Warehouse<span class="brand-light">Desk</span><small>OPERATIONS CONSOLE</small></span></a>
+  <nav>
+    <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}"><span class="nav-icon">⌂</span> Overview</a>
+    {% for group, tables in groups.items() %}
+    <div class="nav-group"><div class="nav-caption">{{ group }}</div>
+      {% for name in tables %}<a class="nav-link {% if current_table == name %}active{% endif %}" href="{{ url_for('list_data', table=name) }}"><span class="nav-dot"></span>{{ table_label(name) }}</a>{% endfor %}
+    </div>{% endfor %}
+    <div class="nav-group"><div class="nav-caption">Insights</div><a class="nav-link" href="{{ url_for('low_stock') }}"><span class="nav-dot amber"></span>Low stock</a></div>
+  </nav>
+  <div class="sidebar-bottom"><div class="operator"><span class="operator-avatar">M</span><span><b>Warehouse Manager</b><small>All locations</small></span><span class="online"></span></div><div class="sidebar-foot">SINGLE MANAGER · MULTI-WAREHOUSE</div></div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="breadcrumb">Warehouse Desk <span>/</span> {% block crumb %}Overview{% endblock %}</div><div class="top-meta"><span class="system-dot"></span> System workspace <span class="top-divider"></span><span>{{ now_label }}</span></div></header>
+  <section class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flashes">{% for category,message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block content %}{% endblock %}
+  </section>
+</main>
+</body></html>
