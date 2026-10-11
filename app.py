@@ -160,7 +160,7 @@ def index():
     try:
         with engine.connect() as conn:
             for name in ("warehouse", "employee", "supplier", "customer", "product", "sales_order", "purchase_order"):
-                stats[name] = conn.execute(select(func.count()).select_from(table_for(name))).scalar_one()
+                stats[name] = conn.execute(text(f'SELECT COUNT(*) FROM "{name}"')).scalar_one()
             low = conn.execute(text("SELECT warehouse_name, product_name, quantity_on_hand, reorder_level, stock_class FROM low_stock ORDER BY quantity_on_hand, product_name LIMIT 8")).mappings().all()
     except SQLAlchemyError as exc:
         flash("Could not connect to PostgreSQL. Set DATABASE_URL and run schema.sql.", "error")
